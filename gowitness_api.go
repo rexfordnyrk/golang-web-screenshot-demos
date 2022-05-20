@@ -5,17 +5,18 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
+	"strings"
 	"time"
 )
 
 func main() {
-	getImage("www.innoverex.com")
+	getImage("www.itsfoss.com/install-docker-fedora")
+	//println(fmt.Sprintf("%s-%d","https://innoverex.com", time.Now().UTC().Unix()))
 }
 
-func getImage(site string){
+func getImage(site string) {
 	//concatenating the url string to make the request
-	screenShotService := fmt.Sprintf("http://localhost:7171?url=%s%s","https://", url.QueryEscape(site))
+	screenShotService := fmt.Sprintf("http://localhost:7171?url=%s%s", "https://", site)
 
 	log.Printf("................making request for screenshot using %s", screenShotService)
 	//makng the get request to the gowitness screenshot service
@@ -29,17 +30,18 @@ func getImage(site string){
 		log.Fatalln(err)
 	}
 
-	// You have to manually close the body.
+	// You have to manually close the body
+	//but defer closing till the method is done executing and about it exit
 	defer resp.Body.Close()
 
-	//naming file using domain name and current unix datetime
-	filename := fmt.Sprintf("%s-%d.png",site, time.Now().UTC().Unix())
-
+	//naming file using provided URL without "/"s and current unix datetime
+	filename := fmt.Sprintf("%s-%d.png", strings.Replace(site, "/", "-", -1), time.Now().UTC().Unix())
 
 	// You can now save it to disk...
 	errs := ioutil.WriteFile(filename, body, 0666)
 	if errs != nil {
 		log.Fatalln(errs.Error())
 	}
-	log.Printf("................saved screenshot to file %s", filename)
+	log.Printf("..............saved screenshot to file %s", filename)
+
 }
