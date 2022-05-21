@@ -11,28 +11,28 @@ import (
 )
 
 func main() {
-	getUrlBoxImage("www.innoverex.com", "Your-API-Key", "png")
-	//println(fmt.Sprintf("%s-%d","https://innoverex.com", time.Now().UTC().Unix()))
+	getUrlBoxImage("www.itsfoss.com/install-docker-fedora", "YOUR-API-KEY")
 }
 
-func getUrlBoxImage(site string, apiKey string, format string) {
+func getUrlBoxImage(site string, apiKey string){
 	//concatenating the api key and document format to make the request
-	screenShotService := fmt.Sprintf("https://api.urlbox.io/v1/%s/%s?", apiKey, format)
+	screenShotService := fmt.Sprintf("https://api.urlbox.io/v1/%s/png?", apiKey)
 
 	//creating a map of key-value pairs of Urlbox API options
 	params := url.Values{
-		"url":                 {site},
-		"format":              {"png"},
-		"width":               {"1400"},
-		"height":              {"690"},
-		"full_page":           {"true"},
-		"block_ads":           {"true"},
-		"hide_cookie_banners": {"true"},
-		"click_accept":        {"true"},
+		"url": {site},
+		"width": {"1400"},
+		"full_page": {"true"}, //for full page screenshot
+		"block_ads": {"true"}, //remove ads from page
+		"hide_cookie_banners": {"true"}, //remove cookie banners if any
+		"click_accept": {"true"}, //click accept buttons to dismiss
 	}
 
 	//Configuring the request with the method, URL and body
 	req, err := http.NewRequest("GET", screenShotService, nil)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	//encode values into URL encoded form/query parameters
 	req.URL.RawQuery = params.Encode()
@@ -58,7 +58,7 @@ func getUrlBoxImage(site string, apiKey string, format string) {
 	}
 
 	//naming file using provided URL without "/"s and current unix datetime
-	filename := fmt.Sprintf("%s-%d.png", strings.Replace(site, "/", "-", -1), time.Now().UTC().Unix())
+	filename := fmt.Sprintf("%s-%d.png",strings.Replace(site,"/","-",-1), time.Now().UTC().Unix())
 
 	// You can now save it to disk...
 	errs := ioutil.WriteFile(filename, body, 0666)
