@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	getUrlBoxImage("www.itsfoss.com/install-docker-fedora", "YOUR-API-KEY")
+	getUrlBoxImage("www.itsfoss.com/install-docker-fedora", "5D5ub9ZpJ49rCBbz")
 }
 
 func getUrlBoxImage(site string, apiKey string){
@@ -22,10 +22,13 @@ func getUrlBoxImage(site string, apiKey string){
 	params := url.Values{
 		"url": {site},
 		"width": {"1400"},
-		"full_page": {"true"}, //for full page screenshot
-		"block_ads": {"true"}, //remove ads from page
-		"hide_cookie_banners": {"true"}, //remove cookie banners if any
-		"click_accept": {"true"}, //click accept buttons to dismiss
+		"height": {"900"},
+		"force": {"true"}, //force take new screenshot instead of cached screenshot
+		"wait_until": {"mostrequestsfinished"},
+		"full_page":           {"true"}, //full page screenshots
+		"block_ads":           {"true"}, //block page adds
+		"hide_cookie_banners": {"true"}, // accept and hide cookie banners
+		"click_accept":        {"true"},//click accept on pop ups
 	}
 
 	//Configuring the request with the method, URL and body

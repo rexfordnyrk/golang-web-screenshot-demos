@@ -56,10 +56,10 @@ func getChromedpScreenShot(site string, quality int) {
 		chromedp.Sleep(5*time.Second),
 
 		//Captures Screenshot with current window size
-		//chromedp.CaptureScreenshot(&buf),
+		chromedp.CaptureScreenshot(&buf),
 
 		//capture full-page screenshot
-		chromedp.FullScreenshot(&buf,quality),
+		//chromedp.FullScreenshot(&buf,quality),
 	}
 	// capture entire browser viewport, returning png with quality=90
 	if err := chromedp.Run(ctx, tasks); err != nil {
